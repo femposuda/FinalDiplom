@@ -1,8 +1,10 @@
 import org.example.Account;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import io.qameta.allure.Step;
 
 import java.util.stream.Stream;
 
@@ -11,9 +13,15 @@ public class AccountTest {
 
     @ParameterizedTest
     @MethodSource("argumentsStream")
+    @DisplayName("testing AccountName to mask")
     public void testAccountNameToMask(String accountName, boolean isProperName) {
         Account account = new Account(accountName);
-        Assertions.assertEquals(account.checkNameString(), isProperName);
+        compareNameToMask(account.checkNameString(), isProperName);
+    }
+
+    @Step("compare string results")
+    public void compareNameToMask(boolean actual, boolean expected) {
+        Assertions.assertEquals(actual, expected);
     }
 
     public static Stream<Arguments> argumentsStream() {
